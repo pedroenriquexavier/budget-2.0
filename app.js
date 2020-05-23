@@ -11,7 +11,7 @@ function setProgress(percent) {
         percent = 100;
     }
     const offset = circumference - percent / 100 * circumference;
-    circle.style.strokeDashoffset = offset;
+    circle.style.strokeDashoffset = offset; 
 }
 
 var budgetController = (function (){
@@ -321,7 +321,7 @@ var UIController = (function () {
             
             if (type === 'inc') {
                 element = DOMstrings.incomeContainer;
-                html = `<div class="item" id="inc-${obj.id}"><div class="left"><div class="item__description" id="description-inc-${obj.id}">${obj.description}</div></div><div class="right"><div class="item__value" id="value-inc-${obj.id}">${formatNumber(obj.value, 'inc')}</div><div class="item__edit"><button class="item__edit--btn"><i class="far fa-edit " id="edit-inc-${obj.id}"></i></button></div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline" id="delete-inc-${obj.id}"></i></button></div></div><div class="invalidInput" id="invalid-${obj.id}">Invalid Input</div></div>
+                html = `<div class="item" id="inc-${obj.id}"><div class="left"><div class="item__description" id="description-inc-${obj.id}">${obj.description}</div></div><div class="right"><div class="item__value" id="value-inc-${obj.id}">${formatNumber(obj.value, 'inc')}</div><div class="item__edit"><button class="item__edit--btn"><i class="far fa-edit " id="edit-inc-${obj.id}"></i></button></div><div class="item__delete"><button class="item__delete--btn"><i class="fas fa-times" id="delete-inc-${obj.id}"></i></button></div></div><div class="invalidInput" id="invalid-${obj.id}">Invalid Input</div></div>
                 
                 
                 `;
