@@ -229,7 +229,7 @@ var budgetController = (function (){
         
         loadLocalStorage: () => {
             if (localStorage.data) {
-               return getLocalStorage();
+                return getLocalStorage();
             }
         },
         
@@ -330,7 +330,7 @@ var UIController = (function () {
                 html = `<div class="item clearfix" id="exp-${obj.id}">
                 <div class="left">
                 <div class="item__description" id="description-exp-${obj.id}">${obj.description}</div>
-                <div class="item__category">Job</div>
+                <div class="item__category">${obj.category}</div>
                 </div>
                 
                 <div class="right">
@@ -404,9 +404,10 @@ var UIController = (function () {
             let categoriesLength = Object.keys(categories).length;
             //console.log(categoriesLength);
             //console.log(categories);
+            
             document.querySelector(DOMstrings.categoriesChart).innerHTML = '';
             for  (let i = 0; i < categoriesLength; i++) {
-                html = `<div class="budget__categoryTotals--category">${categories[i]}</div><div class="budget__categoryTotals--bar"><span style="width: ${categoriesPerc[i]}%"></span></div><div class="budget__categoryTotals--value">$${categoriesTotals[i]}</div>`;
+                html = `<div class="budget__categoryTotals--category">${categories[i]}</div><div class="budget__categoryTotals--bar"><span style="width: ${categoriesPerc[i]}%"></span></div><div class="budget__categoryTotals--value">$${categoriesTotals[i].toFixed(2)}</div>`;
                 document.querySelector(DOMstrings.categoriesChart).insertAdjacentHTML('beforeend', html); 
             }
             
@@ -643,6 +644,7 @@ var UIController = (function () {
             let catPercArr, crtlCategories;
             //calculate totals for each category -> retornar um objeto
             totalsArr = budgetCtrl.calculateCategoriesTotal();
+            
             //calculate percentages 
             catPercArr = budgetCtrl.calculateCategoriesPercentage(totalsArr); // this function returns the perc in string format
             crtlCategories = budgetCtrl.getCategories();
@@ -658,15 +660,81 @@ var UIController = (function () {
         }
         
         var setLocalStorageItems = (allItems) => {
+            
             allItems.inc.forEach(cur => {
                 
                 let newItem = budgetCtrl.addItem('inc', cur.description, cur.value, cur.categoryIndex);
                 
                 UICtrl.addListItem(newItem, 'inc');
             });
+            
+            let categories = {
+                0: 'Other',
+                1: 'Groceries',
+                2: 'Eating out',
+                3: 'Transportation',
+                4: 'Education',
+                5: 'Healthcare',
+                6: 'Housing',
+                7: 'Fun',
+                8: 'Services',
+                9: 'Personal care',
+                10: 'Online shopping'
+            }
+            
+            console.log(allItems.exp[0]);
+            allItems.exp.forEach((cur, i) => {
+                
+                let index;
+                switch (allItems.exp[i].category) {
+                    case 'Other':
+                    index = 0;
+                    break;
 
-            allItems.exp.forEach(cur => {
-                let newItem = budgetCtrl.addItem('exp', cur.description, cur.value, cur.categoryIndex);
+                    case 'Groceries':
+                    index = 1;
+                    break;
+
+                    case 'Eating out':
+                    index = 2;
+                    break;
+
+                    case 'Transportation':
+                    index = 3;
+                    break;
+
+                    case 'Education':
+                    index = 4;
+                    break;
+
+                    case 'Healthcare':
+                    index = 5;
+                    break;
+
+                    case 'Housing':
+                    index = 6;
+                    break;
+
+                    case 'Fun':
+                    index = 7;
+                    break;
+
+                    case 'Services':
+                    index = 8;
+                    break;
+
+                    case 'Personal care':
+                    index = 9;
+                    break;
+
+                    case 'Online shopping':
+                    index = 10;
+                    break;
+
+                }
+                
+                
+                let newItem = budgetCtrl.addItem('exp', cur.description, cur.value, index);
                 
                 UICtrl.addListItem(newItem, 'exp');
             });
@@ -677,9 +745,10 @@ var UIController = (function () {
                 setupEventListeners();
                 
                 let local = budgetCtrl.loadLocalStorage();
-                
+
                 if (local) {
                     setLocalStorageItems(local);
+                    crtlUpdateBreakdown();
                 }
                 
                 updateBudget();
