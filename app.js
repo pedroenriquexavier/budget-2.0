@@ -344,7 +344,7 @@ var UIController = (function () {
                 </div>
                 
                 <div class="item__delete">
-                <button class="item__delete--btn"><i class="ion-ios-close-outline" id="delete-exp-${obj.id}"></i></button>
+                <button class="item__delete--btn"><i class="fas fa-times" id="delete-exp-${obj.id}"></i></button>
                 </div>
                 </div>
                 <div class="invalidInput" id="invalid-${obj.id}">Invalid Input</div>
