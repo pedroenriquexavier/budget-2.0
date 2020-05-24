@@ -1,4 +1,4 @@
-
+console.log('att');
 const circle = document.querySelector('.progressbar__track');
 const radius = circle.r.baseVal.value;
 const circumference = radius * 2 * Math.PI;
