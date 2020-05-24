@@ -661,8 +661,8 @@ var UIController = (function () {
             allItems.inc.forEach(cur => {
                 
                 let newItem = budgetCtrl.addItem('inc', cur.description, cur.value, cur.categoryIndex);
-                
                 UICtrl.addListItem(newItem, 'inc');
+
             });
             
             let categories = {
@@ -734,6 +734,9 @@ var UIController = (function () {
                 let newItem = budgetCtrl.addItem('exp', cur.description, cur.value, index);
                 
                 UICtrl.addListItem(newItem, 'exp');
+
+                updateBudget();
+                updatePercentages();
             });
         }
         
