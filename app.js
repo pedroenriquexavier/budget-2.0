@@ -1,4 +1,4 @@
-console.log('att');
+console.log('version 1.0.4');
 const circle = document.querySelector('.progressbar__track');
 const radius = circle.r.baseVal.value;
 const circumference = radius * 2 * Math.PI;
@@ -80,7 +80,7 @@ var budgetController = (function (){
     
     
     
-    var calculateTotal = function (type) {
+    var calculateTotal = type => {
         sum = 0;
         data.allItems[type].forEach(cur => {
             sum += cur.value;
@@ -88,7 +88,7 @@ var budgetController = (function (){
         data.totals[type] = sum;
     }
     
-    var calculateCategoryTotal = function (categoryIndex) {
+    var calculateCategoryTotal = categoryIndex => {
         let sum = 0;
         let expensesArr = data.allItems.exp;
         expensesArr.forEach((cur) => {
@@ -126,7 +126,7 @@ var budgetController = (function (){
             data.allItems.inc = [];
         },
         
-        addItem: function(type, description, value, categoryIndex) {
+        addItem: (type, description, value, categoryIndex) => {
             let newItem, id;
             
             if (data.allItems[type].length > 0) {
@@ -146,7 +146,7 @@ var budgetController = (function (){
             return newItem;
         },
         
-        calculateCategoriesTotal: function () {
+        calculateCategoriesTotal: () => {
             let numOfCategories = Object.keys(categories).length;
             let categoriesTotals = [];
             for (let i = 0; i < numOfCategories;i++) {
@@ -157,23 +157,23 @@ var budgetController = (function (){
             return categoriesTotals;
         },
         
-        calculateCategoriesPercentage: function(totalsArr) {
+        calculateCategoriesPercentage: totalsArr => {
             let percArr;
             percArr = totalsArr.map(cur => ((cur/data.totals.exp)*100).toFixed(2) );
             return percArr;
         },
         
         
-        calculatePercentages: function () {
+        calculatePercentages: () => {
             data.allItems.exp.forEach(cur => cur.calculatePercentage(data.totals.inc));
         },
         
-        getPercentages: function () {
+        getPercentages: () => {
             let allPerc = data.allItems.exp.map(cur => cur.getPercentage());
             return allPerc;
         },
         
-        deleteItem: function (type, id) {
+        deleteItem: (type, id) => {
             let arr, index;
             arr = data.allItems[type].map(cur => cur.id);
             index = arr.indexOf(id);
@@ -183,7 +183,7 @@ var budgetController = (function (){
             
         },
         
-        calculateBudget: function() {
+        calculateBudget: () => {
             calculateTotal('exp');
             calculateTotal('inc');
             data.budget = data.totals.inc - data.totals.exp;
@@ -195,7 +195,7 @@ var budgetController = (function (){
             
         },
         
-        getBudget: function() {
+        getBudget: () => {
             return {
                 budget: data.budget,
                 totalInc: data.totals.inc,
@@ -272,7 +272,7 @@ var UIController = (function () {
     
     
     
-    let formatNumber = function (num, type) {
+    let formatNumber = (num, type) => {
         let numSplit, dec, int;
         
         num = Math.abs(num);
@@ -287,17 +287,17 @@ var UIController = (function () {
         return (type === 'exp' ? '- ' : '+ ') + int + '.' + dec;
     }
     
-    let inputValueValidate = function (input) {
+    let inputValueValidate = (input) => {
         return isNaN(input);
     }
     
     
     return {
-        getDOMstrings: function() {
+        getDOMstrings: () => {
             return DOMstrings;
         },
         
-        getInput: function () {
+        getInput: () => {
             
             let isInvalid = inputValueValidate(parseFloat(document.querySelector(DOMstrings.inputValue).value));
             
@@ -315,7 +315,7 @@ var UIController = (function () {
             
         },
         
-        addListItem: function (obj, type) {
+        addListItem: (obj, type) => {
             let html, element;
             
             if (type === 'inc') {
@@ -354,12 +354,12 @@ var UIController = (function () {
             
         },
         
-        deleteListItem: function (iconId) {
+        deleteListItem: (iconId) => {
             let el = document.getElementById(iconId);
             el.parentNode.removeChild(el);
         },
         
-        displayBudget: function (budgetData) {
+        displayBudget: (budgetData) => {
             let type;
             budgetData.budget >= 0 ? type = 'inc' : type = 'exp';
             
@@ -383,7 +383,7 @@ var UIController = (function () {
             allItems.forEach(cur => cur.remove());
         },
         
-        displayMonth: function () {
+        displayMonth: () => {
             
             var formattedDateMonth = new Date().toLocaleDateString('en-US', {
                 month: 'long'
@@ -399,7 +399,7 @@ var UIController = (function () {
             
         },
         
-        displayProgressBars: function (categories ,categoriesPerc, categoriesTotals) {
+        displayProgressBars: (categories ,categoriesPerc, categoriesTotals) => {
             let categoriesLength = Object.keys(categories).length;
             //console.log(categoriesLength);
             //console.log(categories);
@@ -413,7 +413,7 @@ var UIController = (function () {
             
         },
         
-        displayPercentages: function (percentageArr) {
+        displayPercentages: (percentageArr) => {
             let fields = document.querySelectorAll(DOMstrings.expensesPercentageLabel);
             // I have to reverse the array bc Im using afterbegin
             let arr = Array.from(fields).reverse();
@@ -454,7 +454,7 @@ var UIController = (function () {
                 
             },
             
-            clearFields: function () {
+            clearFields: () => {
                 let list = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
                 
                 let arr = Array.from(list);
@@ -511,14 +511,14 @@ var UIController = (function () {
             
         }
         
-        var updateBudget = function () {
+        var updateBudget = () => {
             budgetCtrl.calculateBudget();
             budget = budgetCtrl.getBudget();
             UICtrl.displayBudget(budget);
             setProgress(budget.percentage);
         }
         
-        var updatePercentages = function () {
+        var updatePercentages = () => {
             // 1. calculate the percentages
             budgetCtrl.calculatePercentages();
             // 2. read percentages from budget controller
@@ -527,7 +527,7 @@ var UIController = (function () {
             UICtrl.displayPercentages(percentages);
         }
         
-        var crtlAddItem = function () { 
+        var crtlAddItem = () => { 
             let input, newItem;
             
             //get input
@@ -563,7 +563,7 @@ var UIController = (function () {
             }
         }
         
-        var crtlDeleteItem = function (e) {
+        var crtlDeleteItem = e => {
             let itemID, obj;
             if (e.target.id.includes('delete-')) {
                 
@@ -581,7 +581,7 @@ var UIController = (function () {
             
         }
         
-        var ctrlEditItem = (e) => {
+        var ctrlEditItem = e => {
             let itemID, descriptionBox, valueBox, obj;
             
             
@@ -656,7 +656,7 @@ var UIController = (function () {
             budgetCtrl.storeDataInLocalStorage();
         }
         
-        var setLocalStorageItems = (allItems) => {
+        var setLocalStorageItems = allItems => {
             
             allItems.inc.forEach(cur => {
                 
