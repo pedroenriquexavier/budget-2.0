@@ -108,7 +108,7 @@ var budgetController = (function (){
     
     return {
         
-        //budgetCtrl.changeObjectProperty(id, type, 'description',descriptionBox.textContent);
+        
         changeObjectProperty: (id, type, property, newContent) => {
             
             if (property === 'value') {
@@ -117,9 +117,8 @@ var budgetController = (function (){
             }
             
             data.allItems[type][id][property] = newContent;
+            console.log(newContent);
             return newContent;
-            //console.log(data.allItems[type][id]);
-            //gotta run a lot of input validation here
         },
         
         deleteAll: () => {
@@ -407,7 +406,7 @@ var UIController = (function () {
             
             document.querySelector(DOMstrings.categoriesChart).innerHTML = '';
             for  (let i = 0; i < categoriesLength; i++) {
-                html = `<div class="budget__categoryTotals--category">${categories[i]}</div><div class="budget__categoryTotals--bar"><span style="width: ${categoriesPerc[i]}%"></span></div><div class="budget__categoryTotals--value">$${categoriesTotals[i].toFixed(2)}</div>`;
+                html = `<div class="budget__categoryTotals--category">${categories[i]}</div><div class="budget__categoryTotals--bar"><span style="width: ${categoriesPerc[i]}%"></span></div><div class="budget__categoryTotals--value">$ ${categoriesTotals[i].toFixed(2)}</div>`;
                 document.querySelector(DOMstrings.categoriesChart).insertAdjacentHTML('beforeend', html); 
             }
             
@@ -437,8 +436,6 @@ var UIController = (function () {
             element.contentEditable = 'false';
             element.classList.remove('editable');
         },
-        
-        setItemsFromLocalStorage: () => {},
         
         changeType: () => {
             var fields = document.querySelectorAll(
@@ -621,7 +618,7 @@ var UIController = (function () {
                         budgetCtrl.changeObjectProperty(obj.id, obj.type, 'description', newDesc);
                         let signal;
                         obj.type === 'inc' ? signal = '+' : signal = '-';
-                        valueBox.innerHTML = signal + ' ' + budgetCtrl.changeObjectProperty(obj.id, obj.type, 'value', valueBox.textContent);
+                        valueBox.innerHTML = signal + ' ' + budgetCtrl.changeObjectProperty(obj.id, obj.type, 'value', valueBox.textContent).toLocaleString();
                         
                         UICtrl.makeElementNotEditable(descriptionBox);
                         UICtrl.makeElementNotEditable(valueBox);
@@ -682,7 +679,7 @@ var UIController = (function () {
                 10: 'Online shopping'
             }
             
-            console.log(allItems.exp[0]);
+            
             allItems.exp.forEach((cur, i) => {
                 
                 let index;
